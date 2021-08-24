@@ -65,3 +65,123 @@ ggplot(
     y="Investment (millions of 2012 $)"
   )+
   theme_minimal()
+
+
+ggplot(
+  data=main,
+  aes(x=year,y=gross_inv_chain,fill=lab)   
+)+
+  geom_area()+
+  labs(
+    title = "Evolution of investment on US infrastructures",
+    x="Year",
+    y="Investment (millions of 2012 $)"
+  )+
+  geom_text(
+    data=final,              
+    aes(
+      y=ypos-150000,         # Decrease label y position 
+      label=lab),   
+    x=2018, 
+    hjust=0                  # Left align text
+  )+
+  scale_x_continuous(
+    limits=c(1947,2022),     # Expand x axis to leave space for labels
+    breaks=c(1950,1980,2010)
+  )+
+  guides(
+    fill=FALSE                # No need for fill legend anymore !
+  )+
+  theme_minimal()
+
+
+final<-main%>%
+  filter(year=="2017")%>%              # Keep only 2017 value
+  arrange(desc(lab))%>%                # Inverse factor order (first is at the bottom of plot)
+  mutate(                              # Create new column ypos and
+    ypos=cumsum(gross_inv_chain)       # fill with cumulative sum of invest for 2017
+  )                                     
+
+
+ggplot(
+  data=main,
+  aes(x=year,y=gross_inv_chain,fill=lab)   
+)+
+  geom_area()+
+  labs(
+    title = "Evolution of investment on US infrastructures",
+    x="Year",
+    y="Investment (millions of 2012 $)"
+  )+
+  geom_text(
+    data=final,              
+    aes(
+      y=ypos-150000,         # Decrease label y position 
+      label=lab),   
+    x=2018, 
+    hjust=0                  # Left align text
+  )+
+  scale_x_continuous(
+    limits=c(1947,2022),     # Expand x axis to leave space for labels
+    breaks=c(1950,1980,2010,2017)
+  )+
+  guides(
+    fill=FALSE                # No need for fill legend anymore !
+  )+
+  theme_minimal()
+
+max(main$year)
+
+
+
+
+# Create color palette
+pal<-c("#0F4C5C","#E36414","#9A031E")
+
+# Specify color palette with a new column inside main
+main<-main%>%
+  mutate(
+    col_lab=case_when(
+      lab=="Basic"~"#0F4C5C",
+      lab=="Social"~"#E36414",
+      lab=="Digital"~"#9A031E"
+    ))
+
+
+
+
+ggplot(
+  data=main,
+  aes(x=year,y=gross_inv_chain,fill=lab)   
+)+
+  geom_area()+
+  labs(
+    title = "Evolution of investment on US infrastructures",
+    x="Year",
+    y="Investment (millions of 2012 $)"
+  )+
+  geom_text(
+    data=final,              
+    aes(
+      y=ypos-150000,         
+      label=lab,
+      color=lab            # Add color inside the aes()
+    ),   
+    x=2018, 
+    hjust=0                  
+  )+
+  scale_fill_manual(       # Specify fill palette
+    breaks=main$lab,values=main$col_lab
+  )+
+  scale_color_manual(      # Same palette for color
+    breaks=main$lab,values=main$col_lab
+  )+
+  scale_x_continuous(
+    limits=c(1947,2022),     
+    breaks=c(1950,1980,2010)
+  )+
+  guides(
+    fill=FALSE,
+    color=FALSE             # Hide color legend
+  )+
+  theme_minimal()
