@@ -1,4 +1,4 @@
-# Recreating WSJ Betting Status Map
+# Recreating WSJ Chart
 
 
 WSJ                        |  My Try
