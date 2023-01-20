@@ -3,4 +3,4 @@
 
 
 ### Maps
-- WA: github.com/doehm/tidytues/blob/main/scripts/2023/week%202%20birds/birds.R
+- WA: https://github.com/doehm/tidytues/blob/main/scripts/2023/week%202%20birds/birds.R
